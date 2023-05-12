@@ -4,7 +4,13 @@
     "web": {
       "bundler": "metro"
     },
-    "name": "bank-app",
+    "splash": {
+      "image": "./assets/splash-screen.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#2e414e"
+    },
+    "icon": "./assets/icon.png",
+    "name": "New Bank App",
     "slug": "bank-app"
   }
 }

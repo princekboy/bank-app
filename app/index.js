@@ -1,23 +1,25 @@
 import React from 'react';
-import {View, Text, SafeAreaView} from 'react-native'
 import { Stack, useRouter } from "expo-router";
 import { BalanceCard } from '../components';
+import { Ionicons } from '@expo/vector-icons';
+import { NativeBaseProvider, Box, Button } from 'native-base';
 
 const Home = () => {
     return (
-        <SafeAreaView>
+        <NativeBaseProvider>
             <Stack.Screen
                 options={{
                     headerStyle: {
-                        backgroundColor: "#cdcdcd",
+                        backgroundColor: "#ececec",
                     },
                     headerTitleAlign: "center",
                     headerShadowVisible: false,
-                    headerTitle: "Bank App",
+                    headerTitle: "Mobile Banking",
+                    headerLeft: () => <Ionicons name='menu' size={26} color="black"></Ionicons>
                 }}
             />
             <BalanceCard />
-        </SafeAreaView>
+        </NativeBaseProvider>
     )
 }
 
