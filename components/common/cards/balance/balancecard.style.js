@@ -6,21 +6,38 @@ const styles = StyleSheet.create({
         margin: 5
     },
     card: {
-        border: 3
+        border: 5,
+        padding: 12,
+        backgroundColor: "#fff",
+        borderRadius: 4 
     },
-    cardBody: {
-        flexGrow: 1,
-        flexShrink: 1,
-        flexBasis: 'auto',
-        padding: 10,
-        backgroundColor: "#fff"
+    textLight: {
+        color: "#fdb814"
     },
-    cardText: {
+    textDark: {
         color: "#2e414e"
     },
     cardTextLarge: {
-        fontSize: 20,
+        fontSize: 26,
         fontWeight: 800,
+    },
+    darkColor: {
+        backgroundColor: "#2e414e"
+    },
+    lightColor: {
+        backgroundColor: "#fdb814",
+    },
+    p: {
+        padding: 10
+    },
+    flex: {
+        justifyContent: "center",
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'flex-start' // if you want to fill rows left to right
+    },
+    item: {
+        width: '50%'
     }
 })
 

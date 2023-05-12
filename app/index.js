@@ -2,11 +2,11 @@ import React from 'react';
 import { Stack, useRouter } from "expo-router";
 import { BalanceCard } from '../components';
 import { Ionicons } from '@expo/vector-icons';
-import { NativeBaseProvider, Box, Button } from 'native-base';
+import { SafeAreaView } from 'react-native';
 
 const Home = () => {
     return (
-        <NativeBaseProvider>
+        <SafeAreaView>
             <Stack.Screen
                 options={{
                     headerStyle: {
@@ -19,7 +19,7 @@ const Home = () => {
                 }}
             />
             <BalanceCard />
-        </NativeBaseProvider>
+        </SafeAreaView>
     )
 }
 
