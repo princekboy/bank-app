@@ -5,9 +5,16 @@
       "bundler": "metro"
     },
     "splash": {
-      "image": "./assets/splash-screen.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#2e414e"
+      "backgroundColor": "#2f3855"
+    },
+    "backgroundColor": "#2f3855",
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#3a81fd",
+      "hidden": false,
+      "translucent": false
     },
     "icon": "./assets/icon.png",
     "name": "New Bank App",

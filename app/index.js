@@ -1,26 +1,46 @@
 import React from 'react';
-import { Stack, useRouter } from "expo-router";
-import { BalanceCard } from '../components';
-import { Ionicons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
+import { Stack } from 'expo-router';
+import { Login } from '../components/auth';
+
+
 
 const Home = () => {
     return (
-        <SafeAreaView>
+        <SafeAreaView style={styles.fullscreen}>
+            <StatusBar
+                animated={false}
+                backgroundColor="#24293e"
+                barStyle="light-content"
+                hidden={false}
+            />
             <Stack.Screen
                 options={{
                     headerStyle: {
-                        backgroundColor: "#ececec",
+                        backgroundColor: "#24293e",
                     },
                     headerTitleAlign: "center",
                     headerShadowVisible: false,
                     headerTitle: "Mobile Banking",
-                    headerLeft: () => <Ionicons name='menu' size={26} color="black"></Ionicons>
+                    headerShown: false,
+                    headerTintColor: "#ffffff"
                 }}
             />
-            <BalanceCard />
+            <Login />
+            {/* <BalanceCard />
+            <ButtonTop /> */}
         </SafeAreaView>
     )
 }
 
 export default Home;
+
+const styles = StyleSheet.create({
+    fullscreen: {
+        backgroundColor: "#24293e", 
+        justifyContent: 'center', 
+        alignItems: 'center',
+        paddingLeft: 5,
+        paddingRight: 5,
+    }
+})

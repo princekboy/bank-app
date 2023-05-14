@@ -9,7 +9,7 @@ const BalanceCard = () => {
       <View style={[styles.card, styles.darkColor, {padding: 30}]}>
         <View style={styles.flex}>
           <View style={styles.item}>
-            <Text style={{color: "#ffffff", paddingBottom: 10}}>Welcome Mr. L3git</Text>
+            <Text style={{color: "#ffffff", paddingBottom: 10}}>Good Morning Oghenekharo,</Text>
             <Text style={[styles.cardTextLarge, styles.textLight, {paddingBottom: 10}]}>₦2,000,000</Text>
             <Text style={{color: "#ffffff"}}>Available Balance</Text>
           </View>
