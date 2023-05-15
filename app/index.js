@@ -1,35 +1,11 @@
 import React from 'react';
-import { SafeAreaView, StatusBar, StyleSheet } from 'react-native';
-import { Stack } from 'expo-router';
-import { Login } from '../components/auth';
-
-
+import { Text, View, StyleSheet } from 'react-native';
 
 const Home = () => {
     return (
-        <SafeAreaView style={styles.fullscreen}>
-            <StatusBar
-                animated={false}
-                backgroundColor="#24293e"
-                barStyle="light-content"
-                hidden={false}
-            />
-            <Stack.Screen
-                options={{
-                    headerStyle: {
-                        backgroundColor: "#24293e",
-                    },
-                    headerTitleAlign: "center",
-                    headerShadowVisible: false,
-                    headerTitle: "Mobile Banking",
-                    headerShown: false,
-                    headerTintColor: "#ffffff"
-                }}
-            />
-            <Login />
-            {/* <BalanceCard />
-            <ButtonTop /> */}
-        </SafeAreaView>
+        <View>
+            <Text>Hello</Text>
+        </View>
     )
 }
 
