@@ -16,6 +16,8 @@ import { Stack, useRouter } from 'expo-router'
 import { Formik } from 'formik';
 import * as ImagePicker from 'expo-image-picker';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { AuthContext } from '../../components/Credentials';
 
 import {Octicons, Ionicons, Fontisto, FontAwesome} from '@expo/vector-icons';
@@ -49,6 +51,7 @@ const RegScreen = () => {
     const [date, setDate] = useState(new Date(2000, 0, 1));
     const [selectedImage, setSelectedImage] = useState(null);
     const [message, setMessage] = useState('');
+    const {storedCredentials, setStoredCredentials} = useContext(AuthContext);
 
     const router = useRouter();
 
@@ -101,6 +104,8 @@ const RegScreen = () => {
 
         let formData = new FormData();
 
+        let newDob = dob.toDateString();
+
         formData.append('fullname', fullname);
         formData.append('photo', {
             uri : newImageUri,
@@ -112,7 +117,7 @@ const RegScreen = () => {
         formData.append('phone', phone);
         formData.append('email', email);
         formData.append('password', password);
-        formData.append('dob', dob);
+        formData.append('dob', newDob.substring(0,15));
         
         const config = {
             headers: {'Content-Type': 'multipart/form-data'},
@@ -121,18 +126,28 @@ const RegScreen = () => {
         axios
         .post(url, formData, config)
         .then(async (response) => {
-            const result = response;
-            // const {message} = result;
-
-            console.log(result.data.message)
-            console.log(photo.split("/").pop())
-            handleMessage(result.data.message)
-
-            // if(status !== 'success'){
-            //     handleMessage(message)
-            // }else{
-            //     persistLogin({...response.message})
-            // }
+            const result = response.data;
+            let m = {};
+            if(result.message == 'success'){
+                m = {
+                    u_id: result.u_id,
+                    fullname: result.fullname,
+                    token: result.token,
+                    username: result.username,
+                    email: result.email,
+                    gender: result.gender,
+                    phone: result.phone,
+                    photo: result.photo,
+                    dob: result.dob
+                }
+                handleMessage("Registration was successful")
+                setTimeout(function(){
+                    persistLogin({...m})
+                }, 2000);
+                console.log(m)
+            }else{
+                handleMessage("Registration failed")
+            }
             setSubmitting(false)
         })
         .catch((error) => {
@@ -282,13 +297,14 @@ const RegScreen = () => {
                         }
                         style={[styles.textInput, {borderWidth: 1, borderColor: '#ffffff'}]}
                         >
-                        <Picker.Item style={styles.textLight} label="Male" value="Male" />
+                        <Picker.Item label="--Select Gender--" value="" />
+                        <Picker.Item label="Male" value="Male" />
                         <Picker.Item label="Female" value="Female" />
                     </Picker>
                     
                     <MyTextInput
                           icon="calendar"
-                          placeholder="YYY-MM-DD"
+                          placeholder="YYYY-MM-DD"
                           placeholderTextColor='#ffffff'
                           onChangeText={handleChange('dob')}
                           onBlur={handleBlur('dob')}
@@ -301,7 +317,6 @@ const RegScreen = () => {
                       <MyTextInput
                         placeholder='Password'
                         icon="lock"
-                        placeholder="* * * * * * *"
                         placeholderTextColor="#ffffff"
                         onChangeText={handleChange('password')}
                         onBlur={handleBlur('password')}
@@ -315,7 +330,6 @@ const RegScreen = () => {
                     <MyTextInput
                         placeholder='Confirm Password'
                         icon="lock"
-                        placeholder="* * * * * * *"
                         placeholderTextColor="#ffffff"
                         onChangeText={handleChange('confirmPassword')}
                         onBlur={handleBlur('confirmPassword')}

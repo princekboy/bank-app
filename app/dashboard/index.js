@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const UserHome = () => {
   const {storedCredentials, setStoredCredentials} = useContext(AuthContext)
 
-  const {username, password} = storedCredentials;
+  const {username, email} = storedCredentials;
 
   const clearLogin = () => {
     AsyncStorage.removeItem('mybankapp')
@@ -39,7 +39,7 @@ const UserHome = () => {
               }}
             />
             <View>
-              <Text style={styles.loginHeader}>Hello {username} {password}</Text>
+              <Text style={styles.loginHeader}>Hello {username} {email}</Text>
             </View>
             <TouchableOpacity style={styles.buttonLight} onPress={clearLogin}>
               <Text style={styles.btnText}>Logout</Text>
