@@ -1,26 +1,22 @@
 import React from 'react';
-import { Stack, useRouter } from "expo-router";
-import { BalanceCard } from '../components';
-import { Ionicons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 
 const Home = () => {
     return (
-        <SafeAreaView>
-            <Stack.Screen
-                options={{
-                    headerStyle: {
-                        backgroundColor: "#ececec",
-                    },
-                    headerTitleAlign: "center",
-                    headerShadowVisible: false,
-                    headerTitle: "Mobile Banking",
-                    headerLeft: () => <Ionicons name='menu' size={26} color="black"></Ionicons>
-                }}
-            />
-            <BalanceCard />
-        </SafeAreaView>
+        <View>
+            <Text>Hello</Text>
+        </View>
     )
 }
 
 export default Home;
+
+const styles = StyleSheet.create({
+    fullscreen: {
+        backgroundColor: "#24293e", 
+        justifyContent: 'center', 
+        alignItems: 'center',
+        paddingLeft: 5,
+        paddingRight: 5,
+    }
+})

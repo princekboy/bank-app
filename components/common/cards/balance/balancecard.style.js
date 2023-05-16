@@ -12,20 +12,20 @@ const styles = StyleSheet.create({
         borderRadius: 4 
     },
     textLight: {
-        color: "#fdb814"
+        color: "#8dbafe"
     },
     textDark: {
-        color: "#2e414e"
+        color: "#2f3855"
     },
     cardTextLarge: {
         fontSize: 26,
         fontWeight: 800,
     },
     darkColor: {
-        backgroundColor: "#2e414e"
+        backgroundColor: "#2f3855"
     },
     lightColor: {
-        backgroundColor: "#fdb814",
+        backgroundColor: "#8dbafe",
     },
     p: {
         padding: 10
