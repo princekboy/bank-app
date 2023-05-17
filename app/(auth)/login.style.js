@@ -35,12 +35,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#2f3855',
         borderRadius: 5,
         padding: 8,
+        paddingLeft: 42,
         borderColor: '#fff',
         borderWidth: 1,
         textAlign: 'left',
         width: 300,
         marginBottom: 10,
         color: '#fff',
+        marginVertical: 3
     },
     loginHeader: {
         fontSize: 30,
@@ -63,7 +65,25 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "bold",
         textTransform: 'uppercase',
-    }
+    },
+    msgBox: {
+        textAlign: 'center',
+        fontSize: 13,
+        color: '#ffffff',
+        margin: 10
+    },
+    leftIcon: {
+        left: 17,
+        top: 20,
+        position: 'absolute',
+        zIndex: 1,
+    },
+    rightIcon: {
+        right: 17,
+        top: 17,
+        position: 'absolute',
+        zIndex: 1,
+    },
 })
 
 export default styles;

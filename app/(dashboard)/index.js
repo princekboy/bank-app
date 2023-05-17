@@ -1,14 +1,17 @@
 import React, {useContext} from 'react'
-import { AuthContext} from '../../components/Credentials';
-import {Stack} from 'expo-router'
-import { SafeAreaView, StatusBar, TouchableOpacity, Text, View, StyleSheet } from 'react-native';
+// import { AuthContext } from '../components/Credentials';
+import { SafeAreaView, StatusBar, Image, TouchableOpacity, Text, View, StyleSheet } from 'react-native';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Stack } from 'expo-router';
+import HomeDrawer from './profile';
 
 const UserHome = () => {
-  const {storedCredentials, setStoredCredentials} = useContext(AuthContext)
+  // const {storedCredentials, setStoredCredentials} = useContext(AuthContext)
 
-  const {username, email} = storedCredentials;
+  // const {dob, email, fullname, gender, phone, photo, token, u_id, username} = storedCredentials;
+
+  // console.log(storedCredentials)
 
   const clearLogin = () => {
     AsyncStorage.removeItem('mybankapp')
@@ -17,6 +20,10 @@ const UserHome = () => {
     })
     .catch(error => console.log(error))
 }
+
+// if(token == null || token == ''){
+//   clearLogin()
+// }
   return (
     <SafeAreaView style={styles.fullscreen}>
             <StatusBar
@@ -27,19 +34,20 @@ const UserHome = () => {
             />
             <Stack.Screen
               options={{
-                headerBackground: () => {
-                  {
+                headerStyle: {
                     backgroundColor: '#24293e'
-                  }
-                },
-                headerTintColor: "#ffffff",
+                  },
+		headerTintColor: "#ffffff",
                 headerShown: true,
                 headerTitle: 'My Dashboard',
                 headerTitleAlign: 'center',
               }}
             />
             <View>
-              <Text style={styles.loginHeader}>Hello {username} {email}</Text>
+              <Image source={{uri: `https://joenicehmp.com/l3git/images/users/`}} style={{width: 120, height: 120, borderRadius: 200 / 2}} resizeMode='contain' />
+            </View>
+            <View>
+              <Text style={styles.loginHeader}>Hello </Text>
             </View>
             <TouchableOpacity style={styles.buttonLight} onPress={clearLogin}>
               <Text style={styles.btnText}>Logout</Text>

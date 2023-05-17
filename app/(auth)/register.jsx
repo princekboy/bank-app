@@ -9,7 +9,6 @@ import {
     TouchableOpacity,
     ActivityIndicator,
     Image,
-    Button,
     ScrollView
  } from 'react-native'
 import { Stack, useRouter } from 'expo-router'
@@ -18,9 +17,9 @@ import * as ImagePicker from 'expo-image-picker';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { AuthContext } from '../../components/Credentials';
+import { AuthContext } from '../components/Credentials';
 
-import {Octicons, Ionicons, Fontisto, FontAwesome} from '@expo/vector-icons';
+import {Octicons, Ionicons, FontAwesome} from '@expo/vector-icons';
 
 import {Picker} from '@react-native-picker/picker';
 
@@ -155,16 +154,12 @@ const RegScreen = () => {
             setSubmitting(false);
             handleMessage("An error occured. Check your network and try again")
         })
-        // console.log(credentials)
-        // handleMessage(`Your Credentials \n ${credentials}`)
-        // setSubmitting(false)
     }
 
     const persistLogin = (credentials) => {
         AsyncStorage
         .setItem('mybankapp', JSON.stringify(credentials))
         .then((result) => {
-            alert("Successful")
             setStoredCredentials(credentials)
         })
         .catch((error) => {

@@ -1,8 +1,8 @@
-import { Stack, useRouter, useSegments } from 'expo-router'
+import { Stack, Slot, useRouter, useSegments } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen';
 import {useState, useCallback, useEffect, useContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AuthContext } from '../components/Credentials';
+import { AuthContext } from './components/Credentials';
 
 
 function useProtectedRoute(user) {
@@ -21,7 +21,7 @@ function useProtectedRoute(user) {
       router.replace("./(auth)/login");
     } else if (user && inAuthGroup) {
       // Redirect away from the sign-in page.
-      router.replace("/dashboard");
+      router.replace("/(dashboard)");
     }
   }, [user, segments]);
 }
@@ -78,7 +78,12 @@ const Layout = (props) => {
         <AuthContext.Provider
           value={{storedCredentials, setStoredCredentials}}
         >
-        <Stack onLayout={onLayoutRootView} />
+        <Stack onLayout={onLayoutRootView} screenOptions={{
+          headerShown: false,
+          headerStyle: () => {{
+            backgroundColor: '#000000'
+          }}
+        }} />
       </AuthContext.Provider> 
     )
 }
