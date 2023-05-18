@@ -37,12 +37,11 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         flexDirection: 'row',
         flexWrap: 'wrap',
-        alignItems: 'flex-start' // if you want to fill rows left to right
+        alignItems: 'space-between' // if you want to fill rows left to right
     },
     item: {
-        width: '25%',
-        marginLeft: 10,
-        marginRight: 10,
+        width: '20%',
+        margin: 5,
     }
 })
 

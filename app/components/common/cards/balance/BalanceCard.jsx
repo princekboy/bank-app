@@ -3,22 +3,32 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import styles from './balancecard.style'
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 
-const BalanceCard = () => {
+const BalanceCard = ({item, user}) => {
   return (
-    <View style={[styles.container]}>
-      <View style={[styles.card, styles.darkColor, {padding: 30}]}>
-        <View style={styles.flex}>
-          <View style={styles.item}>
-            <Text style={{color: "#ffffff", paddingBottom: 10}}>Good Morning Oghenekharo,</Text>
-            <Text style={[styles.cardTextLarge, styles.textLight, {paddingBottom: 10}]}>₦2,000,000</Text>
-            <Text style={{color: "#ffffff"}}>Available Balance</Text>
-          </View>
-          <View style={[styles.item, {paddingLeft: 80, paddingTop: 20}]}>
-            <TouchableOpacity style={[styles.lightColor, {alignItems: "center", padding: 13, borderRadius: 5}]}>
+    <View style={{justifyContent: 'center', alignItems: 'center', padding: 4}}>
+      <View style={{
+      width: 340, 
+      padding: 24,
+      margin: 1,
+      backgroundColor: "#8dbafe",
+      borderRadius: 5,
+      justifyContent: "space-between",
+      shadowColor: 'white',
+      }}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View>
+          <Text style={{color: '#2f3855'}}>{item.accttype} Account</Text>
+          <Text style={{fontSize: 33, fontWeight: 'bold', color: '#2f3855'}}>{item.symbol + '' + item.balance}</Text>
+          <Text style={{fontSize: 16, color: '#2f3855'}}>({item.acctnum})</Text>
+          <Text style={{fontSize: 13, color: '#2f3855'}}>{item.status == 1 ? 'Active' : 'Inactive'}</Text>
+        </View>
+        <View>
+          <TouchableOpacity style={[styles.darkColor, {alignItems: "center", padding: 18, borderRadius: 5}]}>
               <Feather name="file-text" size={24} color="#ffffff" />
             </TouchableOpacity>
-          </View>
+            <Text style={{textAlign: 'center'}}>Activity</Text>
         </View>
+      </View>
       </View>
     </View>
   )
