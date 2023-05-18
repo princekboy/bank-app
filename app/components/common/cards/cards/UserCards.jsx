@@ -10,8 +10,8 @@ const UserCards = ({userid}) => {
     else{
         return (
         <View style={{margin: 5, padding: 8, justifyContent: 'center', alignItems: 'center'}}>
-        <View style={{width: 330, padding: 10, backgroundColor: '#fdfdfd', borderRadius: 5, borderWidth: 2, borderColor: '#8dbafe'}}>
-            <Text style={{textAlign: 'left', fontSize: 16, fontWeight: 'bold'}}>My Cards</Text>
+        <View style={{width: 330, padding: 10, backgroundColor: '#2f3855', borderRadius: 5, borderWidth: 2, borderColor: '#8dbafe'}}>
+            <Text style={{textAlign: 'left', fontSize: 26, fontWeight: 'bold', color:"#fff"}}>My Cards</Text>
             <View style={{marginTop: 10, shadowColor: '#000000', shadowOffset: {width: -2, height: 4}, shadowOpacity: 0.5, shadowRadius: 3,}}>
                 <ImageBackground imageStyle={{borderRadius: 5}} style={{width: 300, padding: 17, justifyContent: 'center'}} source={require('../../../../../assets/images/visabg.jpg')} resizeMode="cover">
                 <Text style={{fontSize: 20, fontWeight: 'bold', color: '#fff', paddingBottom: 2}}>Oghene Bank</Text>
