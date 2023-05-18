@@ -1,17 +1,19 @@
-import React, {useContext} from 'react'
-// import { AuthContext } from '../components/Credentials';
+import React, {useContext, useEffect} from 'react'
+import { AuthContext } from '../components/Credentials';
 import { SafeAreaView, StatusBar, Image, TouchableOpacity, Text, View, StyleSheet } from 'react-native';
 
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { Stack } from 'expo-router';
-import HomeDrawer from './profile';
 
 const UserHome = () => {
-  // const {storedCredentials, setStoredCredentials} = useContext(AuthContext)
 
-  // const {dob, email, fullname, gender, phone, photo, token, u_id, username} = storedCredentials;
+  const {storedCredentials, setStoredCredentials} = useContext(AuthContext);
 
-  // console.log(storedCredentials)
+  if(storedCredentials === null){
+    return null
+  }else{
+    const {dob, email, fullname, gender, phone, photo, token, u_id, username} = storedCredentials;
 
   const clearLogin = () => {
     AsyncStorage.removeItem('mybankapp')
@@ -47,13 +49,14 @@ const UserHome = () => {
               <Image source={{uri: `https://joenicehmp.com/l3git/images/users/`}} style={{width: 120, height: 120, borderRadius: 200 / 2}} resizeMode='contain' />
             </View>
             <View>
-              <Text style={styles.loginHeader}>Hello </Text>
+              <Text style={styles.loginHeader}>Hello {username} </Text>
             </View>
             <TouchableOpacity style={styles.buttonLight} onPress={clearLogin}>
               <Text style={styles.btnText}>Logout</Text>
             </TouchableOpacity>
       </SafeAreaView>
   )
+}
 }
 
 export default UserHome

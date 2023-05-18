@@ -65,7 +65,7 @@ const LoginScreen = () => {
                 setTimeout(function(){
                     persistLogin({...m})
                 }, 2000);
-                console.log(m)
+                // console.log(m)
             }else{
                 handleMessage(`Login failed - ${result.message}`)
             }

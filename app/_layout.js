@@ -4,7 +4,6 @@ import {useState, useCallback, useEffect, useContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthContext } from './components/Credentials';
 
-
 function useProtectedRoute(user) {
   const segments = useSegments();
   const router = useRouter();
@@ -21,7 +20,7 @@ function useProtectedRoute(user) {
       router.replace("./(auth)/login");
     } else if (user && inAuthGroup) {
       // Redirect away from the sign-in page.
-      router.replace("/(dashboard)");
+      router.push("/(dashboard)");
     }
   }, [user, segments]);
 }
@@ -84,6 +83,7 @@ const Layout = (props) => {
             backgroundColor: '#000000'
           }}
         }} />
+        {props.children}
       </AuthContext.Provider> 
     )
 }
