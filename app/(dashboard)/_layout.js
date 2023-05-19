@@ -1,6 +1,6 @@
 import { Drawer } from "expo-router/drawer";
 
-import { SafeAreaView, View, Image, Text } from "react-native";
+import { SafeAreaView, View, Image, Text, Stack } from "react-native";
 import Drawers from '../components/common/links/Drawers'
 
 export const unstable_settings = {
@@ -11,7 +11,8 @@ export const unstable_settings = {
 export default function RootLayout() {
   
   return (
-      <Drawer
+      <Stack>
+        <Drawer
           screenOptions={{
             drawerStyle: {
               backgroundColor: '#8dbafc',
@@ -27,5 +28,13 @@ export default function RootLayout() {
           );
         }}
       />
+        <Stack.Screen
+        name="[transactions]"
+        options={{
+          // Set the presentation mode to modal for our modal route.
+          presentation: "modal",
+        }}
+      />
+      </Stack>
   );
 }
