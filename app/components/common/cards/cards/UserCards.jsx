@@ -13,7 +13,7 @@ const UserCards = ({userid}) => {
         <View style={{width: 330, padding: 10, backgroundColor: '#2f3855', borderRadius: 5, borderWidth: 2, borderColor: '#8dbafe'}}>
             <Text style={{textAlign: 'left', fontSize: 26, fontWeight: 'bold', color:"#fff"}}>My Cards</Text>
             <View style={{marginTop: 10, shadowColor: '#000000', shadowOffset: {width: -2, height: 4}, shadowOpacity: 0.5, shadowRadius: 3,}}>
-                <ImageBackground imageStyle={{borderRadius: 20}} style={{width: 300, padding: 17, justifyContent: 'center'}} source={require('../../../../../assets/images/visabg.jpg')} resizeMode="cover">
+                <ImageBackground imageStyle={{borderRadius: 17}} style={{width: 300, padding: 17, justifyContent: 'center'}} source={require('../../../../../assets/images/visabg.jpg')} resizeMode="cover">
                 <Text style={{fontSize: 20, fontWeight: 'bold', color: '#fff', paddingBottom: 2}}>Oghene Bank</Text>
                 <Text style={{fontSize: 14, fontWeight: 500, color: '#fff', paddingBottom: 8}}>Credit Card</Text>
                 <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
