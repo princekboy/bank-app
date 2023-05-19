@@ -1,17 +1,30 @@
+import { useContext } from "react";
 import { Drawer } from "expo-router/drawer";
 
-import { SafeAreaView, View, Image, Text, Stack } from "react-native";
-import Drawers from '../components/common/links/Drawers'
+import { SafeAreaView, View, Image, Text } from "react-native";
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import Drawers from '../components/common/links/Drawers';
+
+import { AuthContext } from '../components/Credentials';
 
 export const unstable_settings = {
     // Ensure any route can link back to `/`
     initialRouteName: "index",
-  };
+};
 
 export default function RootLayout() {
-  
+  const {storedCredentials, setStoredCredentials} = useContext(AuthContext);
+
+  const clearLogin = () => {
+      AsyncStorage.removeItem('mybankapp')
+      .then(() => {
+          setStoredCredentials("")
+      })
+      .catch(error => console.log(error))
+  }
   return (
-      <Stack>
         <Drawer
           screenOptions={{
             drawerStyle: {
@@ -23,18 +36,10 @@ export default function RootLayout() {
           drawerContent={(props) => {
           return (
             <SafeAreaView style={{ flex: 1 }}>
-              <Drawers user={{storedCredentials}} />
+              <Drawers clearLogin={clearLogin} />
             </SafeAreaView>
           );
         }}
       />
-        <Stack.Screen
-        name="[transactions]"
-        options={{
-          // Set the presentation mode to modal for our modal route.
-          presentation: "modal",
-        }}
-      />
-      </Stack>
   );
 }

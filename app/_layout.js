@@ -20,7 +20,7 @@ function useProtectedRoute(user) {
       router.replace("./(auth)/login");
     } else if (user && inAuthGroup) {
       // Redirect away from the sign-in page.
-      router.push("/(dashboard)");
+      router.replace("/(dashboard)");
     }
   }, [user, segments]);
 }
@@ -28,7 +28,7 @@ function useProtectedRoute(user) {
 
 SplashScreen.preventAutoHideAsync();
 
-const Layout = (props) => {
+const RootLayout = (props) => {
 
     const [appReady, setAppReady] = useState(false);
     const [storedCredentials, setStoredCredentials] = useState(null);
@@ -43,7 +43,10 @@ const Layout = (props) => {
           console.warn(e);
         } finally {
           // Tell the application to render
-          setAppReady(true);
+          setTimeout(function(){
+            setAppReady(true);
+          }, 2000)
+          
         }
       }
   
@@ -88,4 +91,4 @@ const Layout = (props) => {
     )
 }
 
-export default Layout
+export default RootLayout

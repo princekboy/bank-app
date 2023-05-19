@@ -10,7 +10,7 @@ import { AuthContext } from '../../Credentials';
 
 import { useContext } from 'react';
 
-const Drawers = () => {
+const Drawers = ({clearLogin}) => {
 
   const {storedCredentials, setStoredCredentials} = useContext(AuthContext);
 
@@ -19,14 +19,6 @@ const Drawers = () => {
   }else{
     const router = useRouter();
     const {dob, email, fullname, gender, phone, photo, token, u_id, username} = storedCredentials;
-
-  const clearLogin = () => {
-    AsyncStorage.removeItem('mybankapp')
-    .then(() => {
-        setStoredCredentials("")
-    })
-    .catch(error => console.log(error))
-}
     return (
         <View style={{marginTop: 80, padding: 5}}>
             <View
@@ -51,7 +43,7 @@ const Drawers = () => {
                 </TouchableOpacity>
               </View>
               <View style={{marginTop: 40}}>
-                <TouchableOpacity onPress={() => router.push('./profile')} style={{flexDirection: 'row'}}>
+                <TouchableOpacity onPress={() => router.push({pathname: './transfer', params: {userid: u_id}})} style={{flexDirection: 'row'}}>
                   <FontAwesome name="exchange" size={20} color='blue' style={{paddingRight: 30}} />
                   <Text style={{paddingRight: 50, fontSize: 16}}>Transfer</Text>
                 </TouchableOpacity>

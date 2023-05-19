@@ -4,9 +4,8 @@ const styles = StyleSheet.create({
     container: {
         padding: 5,
         margin: 5,
-        marginTop: 250,
         justifyContent: "center", 
-        alignItems: "center", 
+        alignItems: 'center', 
         flex: 1
     },
     textLight: {

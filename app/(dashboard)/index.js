@@ -3,22 +3,19 @@ import { AuthContext } from '../components/Credentials';
 import { SafeAreaView, ScrollView, ActivityIndicator, StatusBar, Image, TouchableOpacity, FlatList, Text, View, StyleSheet } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import { Stack } from 'expo-router';
+import { Link, Stack } from 'expo-router';
 
 import axios from 'axios';
-import { BalanceCard, ButtonTop, Cards } from '../components';
+import { BalanceCard, ButtonTop, Cards, Tabs } from '../components';
 
 const UserHome = () => {
-
+  const [result, setResult] = useState();
   const {storedCredentials, setStoredCredentials} = useContext(AuthContext);
 
   if(storedCredentials === null){
     return null
   }else{
     const {dob, email, fullname, gender, phone, photo, token, u_id, username} = storedCredentials;
-    const [result, setResult] = useState();
-
     const config = {
       headers: {'Content-Type': 'multipart/form-data'},
     };
@@ -46,20 +43,6 @@ const UserHome = () => {
       fetchUserData()
     }, [])
 
-    const refetch = () => {
-      fetchUserData()
-    }
-  const clearLogin = () => {
-      AsyncStorage.removeItem('mybankapp')
-      .then(() => {
-          setStoredCredentials("")
-      })
-      .catch(error => console.log(error))
-  }
-
-// if(token == null || token == ''){
-//   clearLogin()
-// }
   return (
     <SafeAreaView style={styles.fullscreen}>
             <StatusBar
@@ -84,6 +67,9 @@ const UserHome = () => {
               <Text style={{color: '#fff', fontSize: 18, fontWeight: 800}}>Good morning, {fullname}</Text>
             </View>
               {result == null ? <ActivityIndicator size="large" color="#ffffff" /> : 
+                result.status == 'error' ? <View>
+                  <Text style={{color: '#fff', fontSize: 18, textAlign: 'center'}}>{result.response}</Text>
+                </View> : 
                 <FlatList
                   data={result.response}
                   renderItem={({ item }) => (
@@ -98,7 +84,15 @@ const UserHome = () => {
                 />
               }
               <ButtonTop />
-              {result == null ? <ActivityIndicator size="large" color="#ffffff" /> : <Cards userid={storedCredentials.u_id} />}
+              <View style={{padding: 8, justifyContent: 'center', alignItems: 'center'}}>
+                <View style={{width: 335, padding: 10, backgroundColor: '#2f3855', borderRadius: 5, borderWidth: 1, borderColor: '#8dbafe'}}>
+                    <Text style={{textAlign: 'left', fontSize: 26, fontWeight: 'bold', color:"#fff"}}>My Cards</Text>
+                    <View style={{borderBottomColor: '#ffffff', borderBottomWidth: 1, padding: 5, marginBottom: 5}}></View>
+                    {result == null ? <ActivityIndicator size="large" color="#ffffff" /> : <Cards userid={u_id} fullname={fullname} />}
+                  </View>
+                </View>
+                <Text>My Transactions</Text>
+              {/* <TabButton /> */}
             </ScrollView>
       </SafeAreaView>
   )

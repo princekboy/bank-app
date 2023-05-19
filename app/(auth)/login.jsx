@@ -23,6 +23,7 @@ const initialValues = {
 const LoginScreen = () => {
     const [hidePassword, setHidePassword] = useState(true);
     const [message, setMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
 
     const router = useRouter();
 
@@ -64,8 +65,7 @@ const LoginScreen = () => {
                 handleMessage("Login successful")
                 setTimeout(function(){
                     persistLogin({...m})
-                }, 2000);
-                // console.log(m)
+                }, 200);
             }else{
                 handleMessage(`Login failed - ${result.message}`)
             }
@@ -109,22 +109,11 @@ const LoginScreen = () => {
                     headerShadowVisible: false,
                     headerTitle: "Mobile Banking",
                     headerShown: false,
-                    headerTintColor: "#ffffff"
-                }}
-            />
+                    headerTintColor: "#ffffff",
+                    headerBackVisible: true
+                } }/>
             <KeyboardAvoidingView>
-            <StatusBar
-                    animated={false}
-                    backgroundColor="#24293e"
-                    barStyle="light-content"
-                    hidden={false}
-                />
-                <Stack.Screen 
-                    options={{
-                        headerShown: false,
-                    }}
-                />
-                {/* <ScrollView showsVerticalScrollIndicator={false}> */}
+                <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.container}>
                 <Text style={styles.loginHeader}>Login</Text>
                 <Formik
@@ -178,7 +167,7 @@ const LoginScreen = () => {
               )}
                 </Formik>
                 </View>
-                {/* </ScrollView> */}
+                </ScrollView>
             </KeyboardAvoidingView>
         </SafeAreaView>
   )
