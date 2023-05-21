@@ -39,7 +39,7 @@ if(token == null || token == ''){
                 headerStyle: {
                     backgroundColor: '#24293e'
                   },
-		headerTintColor: "#ffffff",
+                  headerTintColor: "#ffffff",
                 headerShown: true,
                 headerTitle: 'My Profile',
                 headerTitleAlign: 'center',

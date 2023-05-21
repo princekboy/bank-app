@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {View, Text, KeyboardAvoidingView, ScrollView, TouchableOpacity, TextInput, ActivityIndicator} from 'react-native'
 
 import { Formik } from 'formik';
@@ -9,18 +9,36 @@ import axios from 'axios'
 
 import {Octicons, Ionicons, FontAwesome5} from '@expo/vector-icons';
 
+const url = 'https://nigerianbanks.xyz/'
+
 const LocalForm = ({account}) => {
     const [message, setMessage] = useState('');
+    const [selectedBank, setSelectedBank] = useState();
+    const [res, setRes] = useState();
 
     const handleMessage = (message) => {
         setMessage(message)
     }
+
+    useEffect(() => {
+        axios.
+        get(url)
+        .then((response) => {
+            setRes(response.data)
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+    }, [])
     
     const [accountFrom, setAccountFrom] = useState('');
+
     const initialValues = {
         accountTo: '',
         accountFrom: '',
         amount: '',
+        fullname: '',
+        bank: '',
         desc: ''
     }
 
@@ -35,7 +53,9 @@ const LocalForm = ({account}) => {
         formData.append('accountFrom', accountFrom);
         formData.append('amount', amount);
         formData.append('desc', desc);
-        formData.append('param', 'same');
+        formData.append('bank', selectedBank);
+        formData.append('fullname', fullname);
+        formData.append('param', 'local');
         formData.append('u_id', account[0].u_id);
 
         const config = {
@@ -48,9 +68,6 @@ const LocalForm = ({account}) => {
             const result = response.data;
             if(result.response == 'success'){
                 handleMessage("Transfer successful")
-                setTimeout(function(){
-                    location.reload();
-                }, 200);
             }else{
                 handleMessage(`Error Occured - ${result.response}`)
             }
@@ -72,8 +89,8 @@ const LocalForm = ({account}) => {
                 <Formik
                   initialValues={initialValues}
                   onSubmit={(values, {setSubmitting}) => {
-                    values = {...values, accountFrom: accountFrom}
-                    if(values.accountTo == '' || values.accountFrom == '' || values.amount == '' || values.desc == ''){
+                    values = {...values, accountFrom: accountFrom, bank: selectedBank}
+                    if(values.accountTo == '' || values.accountFrom == '' || values.amount == '' || values.fullname == '' || values.bank == '' || values.desc == ''){
                         handleMessage("Please fill all fields");
                         setSubmitting(false)
                     }else{
@@ -91,6 +108,31 @@ const LocalForm = ({account}) => {
                             handleBlur={handleBlur('accountTo')}
                             placeholderTextColor="#ffffff"
                         />
+                        <View style={{backgroundColor: '#2f3855', height: 55, marginBottom: 10, borderWidth: 1, borderColor: '#ffffff', padding: 0, borderRadius: 5}}>
+                            <Picker
+                                selectedValue={selectedBank}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    setSelectedBank(itemValue)
+                                }
+                                style={{
+                                    padding: 10,
+                                    paddingLeft: 42,
+                                    textAlign: 'left',
+                                    width: 300,
+                                    paddingBottom: 20,
+                                    color: '#fff',
+                                    marginVertical: 3
+                                }}
+                                >
+                                <Picker.Item selectedValue enabled={false} label="--Select Bank--" value={null} />
+                                {   res != null ?
+                                    res.map((item, index) => (
+                                        <Picker.Item key={index} label={`${item.name}`} value={item.name} />
+                                    ))
+                                    : null
+                                }
+                            </Picker>
+                        </View>
                         <View style={{backgroundColor: '#2f3855', height: 55, marginBottom: 10, borderWidth: 1, borderColor: '#ffffff', padding: 0, borderRadius: 5}}>
                             <Picker
                                 selectedValue={accountFrom}
@@ -115,6 +157,15 @@ const LocalForm = ({account}) => {
                                 }
                             </Picker>
                         </View>
+                        <MyTextInput
+                            icon="user"
+                            placeholder='Full name'
+                            value={values.fullname}
+                            onChangeText={handleChange('fullname')}
+                            style={styles.textInput}
+                            handleBlur={handleBlur('fullname')}
+                            placeholderTextColor="#ffffff"
+                        />
                         <MyTextInput
                             icon="money-bill-alt"
                             placeholder='Amount'

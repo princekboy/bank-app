@@ -26,6 +26,9 @@ const WireForm = ({account}) => {
         accountTo: '',
         country: '',
         state: '',
+        fullname: '',
+        swift: '',
+        bank: '',
         accountFrom: '',
         amount: '',
         desc: ''
@@ -44,7 +47,10 @@ const WireForm = ({account}) => {
         formData.append('desc', desc);
         formData.append('country', selectedCountry);
         formData.append('state', selectedState);
-        formData.append('param', 'same');
+        formData.append('swift', swift);
+        formData.append('fullname', fullname);
+        formData.append('bank', bank);
+        formData.append('param', 'wire');
         formData.append('u_id', account[0].u_id);
 
         const config = {
@@ -57,9 +63,6 @@ const WireForm = ({account}) => {
             const result = response.data;
             if(result.response == 'success'){
                 handleMessage("Transfer successful")
-                setTimeout(function(){
-                    location.reload();
-                }, 200);
             }else{
                 handleMessage(`Error Occured - ${result.response}`)
             }
@@ -86,7 +89,7 @@ const WireForm = ({account}) => {
                   initialValues={initialValues}
                   onSubmit={(values, {setSubmitting}) => {
                     values = {...values, accountFrom: accountFrom, country: selectedCountry, state: selectedState}
-                    if(values.accountTo == '' || values.accountFrom == '' || values.amount == '' || values.desc == ''){
+                    if(values.accountTo == '' || values.accountFrom == '' || values.country == '' || values.fullname == '' || values.bank == '' || values.swift == '' || values.state == '' || values.amount == '' || values.desc == ''){
                         handleMessage("Please fill all fields");
                         setSubmitting(false)
                     }else{
@@ -95,15 +98,6 @@ const WireForm = ({account}) => {
                 }}
               >{({handleChange, handleBlur, handleSubmit, values, isSubmitting}) => (
                     <>
-                        <MyTextInput
-                            icon="user"
-                            placeholder='Account Number'
-                            value={values.accountTo}
-                            onChangeText={handleChange('accountTo')}
-                            style={styles.textInput}
-                            handleBlur={handleBlur('accountTo')}
-                            placeholderTextColor="#ffffff"
-                        />
                         <View style={{backgroundColor: '#2f3855', height: 55, marginBottom: 10, borderWidth: 1, borderColor: '#ffffff', padding: 0, borderRadius: 5}}>
                             <Picker
                                 selectedValue={accountFrom}
@@ -121,10 +115,13 @@ const WireForm = ({account}) => {
                                 }}
                                 >
                                 <Picker.Item selectedValue enabled={false} label="--Select Account--" value={null} />
-                                { 
+                                {  account !== null ?
                                     account.map((item) => (
                                         <Picker.Item key={item.acctnum} label={`${item.acctnum} (${item.accttype})`} value={item.acctnum} />
                                     ))
+                                    
+                                    :
+                                    null
                                 }
                             </Picker>
                         </View>
@@ -146,10 +143,12 @@ const WireForm = ({account}) => {
                                 }}
                                 >
                                 <Picker.Item selectedValue enabled={false} label="--Select Country--" value={null} />
-                                { 
+                                {  countries != null ?
                                     countries.map((item, index) => (
                                         <Picker.Item key={index} label={`${item}`} value={item} />
                                     ))
+
+                                    : null
                                 }
                             </Picker>
                         </View>
@@ -170,10 +169,11 @@ const WireForm = ({account}) => {
                                 }}
                                 >
                                 <Picker.Item selectedValue enabled={false} label="--Select State--" value={null} />
-                                { 
+                                {   newState != null ?
                                     newState.map((item, index) => (
                                         <Picker.Item key={index} label={`${item}`} value={item} />
                                     ))
+                                    : null
                                 }
                             </Picker>
                         </View>
@@ -184,6 +184,42 @@ const WireForm = ({account}) => {
                             onChangeText={handleChange('amount')}
                             style={styles.textInput}
                             handleBlur={handleBlur('amount')}
+                            placeholderTextColor="#ffffff"
+                        />
+                        <MyTextInput
+                            icon="user"
+                            placeholder='Full name'
+                            value={values.fullname}
+                            onChangeText={handleChange('fullname')}
+                            style={styles.textInput}
+                            handleBlur={handleBlur('fullname')}
+                            placeholderTextColor="#ffffff"
+                        />
+                        <MyTextInput
+                            icon="dollar-sign"
+                            placeholder='Account Number'
+                            value={values.accountTo}
+                            onChangeText={handleChange('accountTo')}
+                            style={styles.textInput}
+                            handleBlur={handleBlur('accountTo')}
+                            placeholderTextColor="#ffffff"
+                        />
+                        <MyTextInput
+                            icon="landmark"
+                            placeholder='Bank Name'
+                            value={values.bank}
+                            onChangeText={handleChange('bank')}
+                            style={styles.textInput}
+                            handleBlur={handleBlur('bank')}
+                            placeholderTextColor="#ffffff"
+                        />
+                        <MyTextInput
+                            icon="cubes"
+                            placeholder='Routing/Swift Code/IBAN'
+                            value={values.swift}
+                            onChangeText={handleChange('swift')}
+                            style={styles.textInput}
+                            handleBlur={handleBlur('swift')}
                             placeholderTextColor="#ffffff"
                         />
                         <MyTextInput

@@ -92,85 +92,93 @@ const LoginScreen = () => {
     const handleMessage = (message) => {
         setMessage(message)
     }
-  return (
-    <SafeAreaView style={styles.fullscreen}>
-            <StatusBar
-                animated={false}
-                backgroundColor="#24293e"
-                barStyle="light-content"
-                hidden={false}
-            />
-            <Stack.Screen
-                options={{
-                    headerStyle: {
-                        backgroundColor: "#24293e",
-                    },
-                    headerTitleAlign: "center",
-                    headerShadowVisible: false,
-                    headerTitle: "Mobile Banking",
-                    headerShown: false,
-                    headerTintColor: "#ffffff",
-                    headerBackVisible: true
-                } }/>
-            <KeyboardAvoidingView>
-                <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={styles.container}>
-                <Text style={styles.loginHeader}>Login</Text>
-                <Formik
-                  initialValues={initialValues}
-                  onSubmit={(values, {setSubmitting}) => {
-                    if(values.username == '' || values.password == ''){
-                        handleMessage("Please fill all fields");
-                        setSubmitting(false)
-                    }else{
-                        handleLogin(values, setSubmitting);
-                    }
-                }}
-              >{({handleChange, handleBlur, handleSubmit, values, isSubmitting}) => (
-                    <>
-                        <MyTextInput
-                            icon="person"
-                            placeholder='Username'
-                            value={values.username}
-                            onChangeText={handleChange('username')}
-                            style={styles.textInput}
-                            handleBlur={handleBlur('username')}
-                            placeholderTextColor="#ffffff"
-                        />
-                        <MyTextInput
-                            placeholder='Password'
-                            icon="lock"
-                            placeholderTextColor="#ffffff"
-                            onChangeText={handleChange('password')}
-                            onBlur={handleBlur('password')}
-                            value={values.password}
-                            secureTextEntry={hidePassword}
-                            isPassword={true}
-                            hidePassword={hidePassword}
-                            setHidePassword={setHidePassword}
-                            style={styles.textInput}
-                        />
-                        <Text type={message} style={styles.msgBox}>{message}</Text>
-                        {!isSubmitting && <TouchableOpacity style={styles.buttonLight} onPress={handleSubmit}>
-                            <Text style={styles.btnText}>Login</Text>
-                        </TouchableOpacity>}
-                        {isSubmitting && <TouchableOpacity style={styles.buttonLight} disabled={true}>
-                            <ActivityIndicator size="large" color='#ffffff' />
-                        </TouchableOpacity>}
-                        <TouchableOpacity style={{marginTop: 25}} onPress={() => router.push('/register')}>
-                            <Text style={{textAlign: 'left', color: '#fff', fontWeight: 'bold', fontSize: 20}}>Signup</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{marginTop: 25}}>
-                            <Text style={{textAlign: 'right', color: '#fff', fontWeight: 'bold'}}>Forgot Password??</Text>
-                        </TouchableOpacity>
-                    </>
-              )}
-                </Formik>
-                </View>
-                </ScrollView>
-            </KeyboardAvoidingView>
+  if(!storedCredentials){
+    return (
+        <SafeAreaView style={styles.fullscreen}>
+            <ActivityIndicator size='large' color='white' />
         </SafeAreaView>
-  )
+    )
+  }else{
+    return (
+        <SafeAreaView style={styles.fullscreen}>
+                <StatusBar
+                    animated={false}
+                    backgroundColor="#24293e"
+                    barStyle="light-content"
+                    hidden={false}
+                />
+                <Stack.Screen
+                    options={{
+                        headerStyle: {
+                            backgroundColor: "#24293e",
+                        },
+                        headerTitleAlign: "center",
+                        headerShadowVisible: false,
+                        headerTitle: "Mobile Banking",
+                        headerShown: false,
+                        headerTintColor: "#ffffff",
+                        headerBackVisible: true
+                    } }/>
+                <KeyboardAvoidingView>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                    <View style={styles.container}>
+                    <Text style={styles.loginHeader}>Login</Text>
+                    <Formik
+                      initialValues={initialValues}
+                      onSubmit={(values, {setSubmitting}) => {
+                        if(values.username == '' || values.password == ''){
+                            handleMessage("Please fill all fields");
+                            setSubmitting(false)
+                        }else{
+                            handleLogin(values, setSubmitting);
+                        }
+                    }}
+                  >{({handleChange, handleBlur, handleSubmit, values, isSubmitting}) => (
+                        <>
+                            <MyTextInput
+                                icon="person"
+                                placeholder='Username'
+                                value={values.username}
+                                onChangeText={handleChange('username')}
+                                style={styles.textInput}
+                                handleBlur={handleBlur('username')}
+                                placeholderTextColor="#ffffff"
+                            />
+                            <MyTextInput
+                                placeholder='Password'
+                                icon="lock"
+                                placeholderTextColor="#ffffff"
+                                onChangeText={handleChange('password')}
+                                onBlur={handleBlur('password')}
+                                value={values.password}
+                                secureTextEntry={hidePassword}
+                                isPassword={true}
+                                hidePassword={hidePassword}
+                                setHidePassword={setHidePassword}
+                                style={styles.textInput}
+                            />
+                            <Text type={message} style={styles.msgBox}>{message}</Text>
+                            {!isSubmitting && <TouchableOpacity style={styles.buttonLight} onPress={handleSubmit}>
+                                <Text style={styles.btnText}>Login</Text>
+                            </TouchableOpacity>}
+                            {isSubmitting && <TouchableOpacity style={styles.buttonLight} disabled={true}>
+                                <ActivityIndicator size="large" color='#ffffff' />
+                            </TouchableOpacity>}
+                            <TouchableOpacity style={{marginTop: 25}} onPress={() => router.push('/register')}>
+                                <Text style={{textAlign: 'left', color: '#fff', fontWeight: 'bold', fontSize: 20}}>Signup</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{marginTop: 25}}>
+                                <Text style={{textAlign: 'right', color: '#fff', fontWeight: 'bold'}}>Forgot Password??</Text>
+                            </TouchableOpacity>
+                        </>
+                  )}
+                    </Formik>
+                    </View>
+                    </ScrollView>
+                </KeyboardAvoidingView>
+            </SafeAreaView>
+      )
+  }
 }
 
 const MyTextInput = ({icon, isPassword, hidePassword, setHidePassword, ...props}) => {

@@ -72,6 +72,7 @@ const Transfer = () => {
         alignItems: 'center',
         paddingLeft: 5,
         paddingRight: 5,
+        height: '100%'
     }}>
         <StatusBar
                 animated={true}

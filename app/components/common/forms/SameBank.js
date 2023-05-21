@@ -26,6 +26,7 @@ const SameBank = ({account}) => {
 
     const handleSend = (values, setSubmitting) => {
         const {accountTo, accountFrom, amount, desc} = values;
+        
         handleMessage(null);
 
         const url = 'https://joenicehmp.com/l3git/dbo/userop.php';
@@ -46,11 +47,8 @@ const SameBank = ({account}) => {
         .post(url, formData, config)
         .then(async (response) => {
             const result = response.data;
-            if(result.response == 'success'){
-                handleMessage("Transfer successful")
-                setTimeout(function(){
-                    location.reload();
-                }, 200);
+            if(result.status == 'success'){
+                handleMessage("Please wait")
             }else{
                 handleMessage(`Error Occured - ${result.response}`)
             }
@@ -61,7 +59,7 @@ const SameBank = ({account}) => {
             setSubmitting(false);
             handleMessage("An error occured. Check your network and try again")
         })
-        console.log(formData)
+        // console.log(account[0].u_id)
     }
        
   return (
