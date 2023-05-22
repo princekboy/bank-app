@@ -82,6 +82,13 @@ const styles = StyleSheet.create({
         padding: 14,
         borderRadius: 5,
     },
+    buttonDark: {
+        backgroundColor: "#8dbafe",
+        borderWidth: 1,
+        width: 200,
+        padding: 14,
+        borderRadius: 5,
+    },
     btnText: {
         textAlign: 'center',
         color: "#2f3855",
@@ -123,7 +130,48 @@ const styles = StyleSheet.create({
         fontSize: 13,
         color: '#ffffff',
         margin: 10
-    }
+    },
+    centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 10,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: '#F194FF',
+  },
+  buttonClose: {
+    backgroundColor: '#2196F3',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: 'center',
+  },
 })
 
 export default styles;

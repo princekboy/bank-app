@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useState} from 'react'
 import { AuthContext } from '../components/Credentials';
 import { SafeAreaView, ScrollView, ActivityIndicator, StatusBar, Image, TouchableOpacity, FlatList, Text, View, StyleSheet } from 'react-native';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Link, Stack } from 'expo-router';
 
 import axios from 'axios';
@@ -11,21 +10,19 @@ import { BalanceCard, ButtonTop, Cards, Tabs } from '../components';
 const UserHome = () => {
   const [result, setResult] = useState();
   const {storedCredentials, setStoredCredentials} = useContext(AuthContext);
-
-  if(storedCredentials === null){
-    return null
-  }else{
-    const {dob, email, fullname, gender, phone, photo, token, u_id, username} = storedCredentials;
-    const config = {
-      headers: {'Content-Type': 'multipart/form-data'},
-    };
-    url = 'https://joenicehmp.com/l3git/dbo/userop.php';
-    data = {
-      u_id: u_id,
-      param: 'getaccounts'
+  const config = {
+        headers: {'Content-Type': 'multipart/form-data'},
+      };
+  const fetchUserData = () => {
+      url = 'https://joenicehmp.com/l3git/dbo/userop.php';
+      data = {};
+     if(storedCredentials !== null){
+      const {dob, email, fullname, gender, phone, photo, token, u_id, username} = storedCredentials;
+      data = {
+        u_id: u_id,
+        param: 'getaccounts'
+      }
     }
-
-    const fetchUserData = () => {
       axios
       .post(url, data, config)
       .then(async (response) => {
@@ -43,6 +40,8 @@ const UserHome = () => {
       fetchUserData()
     }, [])
 
+  if(storedCredentials !== null){
+    const {dob, email, fullname, gender, phone, photo, token, u_id, username} = storedCredentials;
   return (
     <SafeAreaView style={styles.fullscreen}>
             <StatusBar
@@ -83,7 +82,7 @@ const UserHome = () => {
                   horizontal
                 />
               }
-              <ButtonTop />
+              <ButtonTop userid={u_id} />
               <View style={{padding: 8, justifyContent: 'center', alignItems: 'center'}}>
                 <View style={{width: 335, padding: 10, backgroundColor: '#2f3855', borderRadius: 5, borderWidth: 1, borderColor: '#8dbafe'}}>
                     <Text style={{textAlign: 'left', fontSize: 26, fontWeight: 'bold', color:"#fff"}}>My Cards</Text>

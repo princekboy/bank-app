@@ -20,7 +20,7 @@ export default function RootLayout() {
   const clearLogin = () => {
       AsyncStorage.removeItem('mybankapp')
       .then(() => {
-          setStoredCredentials("")
+          setStoredCredentials(null)
       })
       .catch(error => console.log(error))
   }

@@ -1,16 +1,23 @@
 import React, {useState} from 'react'
-import {View, Text, KeyboardAvoidingView, ScrollView, TouchableOpacity, TextInput, ActivityIndicator} from 'react-native'
+import {View, Text, Modal, StyleSheet, Alert, KeyboardAvoidingView, ScrollView, TouchableOpacity, TextInput, ActivityIndicator} from 'react-native'
 
 import { Formik } from 'formik';
 import {Picker} from '@react-native-picker/picker';
 
+import { useRouter } from 'expo-router';
+
 import styles from './form.style'
 import axios from 'axios'
 
-import {Octicons, Ionicons, FontAwesome5} from '@expo/vector-icons';
+import {FontAwesome5, Ionicons} from '@expo/vector-icons';
 
 const SameBank = ({account}) => {
+    const router = useRouter();
     const [message, setMessage] = useState('');
+    const [messageM, setMessageM] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
+    const [hidePassword, setHidePassword] = useState(true);
+    const [res, setRes] = useState();
 
     const handleMessage = (message) => {
         setMessage(message)
@@ -24,11 +31,13 @@ const SameBank = ({account}) => {
         desc: ''
     }
 
+    const pinValues = {
+        accountPin: '',
+    }
+
     const handleSend = (values, setSubmitting) => {
         const {accountTo, accountFrom, amount, desc} = values;
-        
-        handleMessage(null);
-
+        handleMessage(null)
         const url = 'https://joenicehmp.com/l3git/dbo/userop.php';
 
         let formData = new FormData();
@@ -48,7 +57,10 @@ const SameBank = ({account}) => {
         .then(async (response) => {
             const result = response.data;
             if(result.status == 'success'){
-                handleMessage("Please wait")
+                handleMessage("Processing transactions ...")
+                setModalVisible(true)
+                setRes(result.response)
+                handleMessageM(null)
             }else{
                 handleMessage(`Error Occured - ${result.response}`)
             }
@@ -59,9 +71,86 @@ const SameBank = ({account}) => {
             setSubmitting(false);
             handleMessage("An error occured. Check your network and try again")
         })
-        // console.log(account[0].u_id)
     }
-       
+     
+    const handleCancel = () => {
+        const user = res.userid;
+        const transcid = res.transcid
+
+        const url = 'https://joenicehmp.com/l3git/dbo/userop.php';
+
+        let formData = new FormData();
+        formData.append('transcid', transcid);
+        formData.append('userid', user);
+        formData.append('param', 'cancelTrans');
+
+        const config = {
+            headers: {'Content-Type': 'multipart/form-data'},
+        };
+
+        axios
+        .post(url, formData, config)
+        .then(async (response) => {
+            const result = response.data;
+            if(result.status == 'success'){
+                handleMessage(result.response)
+                setModalVisible(false)
+            }else{
+                handleMessage(`Error Occured - ${result.response}`)
+            }
+        })
+        .catch((error) => {
+            console.log(error)
+            handleMessage("An error occured. Check your network and try again")
+        })
+    }
+
+    const handleMessageM = (messageM) => {
+        setMessageM(messageM)
+    }
+
+    const handleConfirm = (values, setSubmitting) => {
+        handleMessage(null)
+        handleMessageM(null)
+        const user = res.userid;
+        const transcid = res.transcid
+        const account = res.account;
+        const accountPin = values.accountPin
+
+        const url = 'https://joenicehmp.com/l3git/dbo/userop.php';
+
+        const formData = new FormData();
+
+        formData.append('transcid', transcid);
+        formData.append('userid', user);
+        formData.append('param', 'checkpin');
+        formData.append('accountPin', accountPin);
+        formData.append('account', account);
+
+        const config = {
+            headers: {'Content-Type': 'multipart/form-data'},
+        };
+
+        axios
+        .post(url, formData, config)
+        .then(async (response) => {
+            const result = response.data;
+            if(result.status == 'success'){
+                handleMessageM('Transaction Successful')
+                setTimeout(() => {
+                    setModalVisible(false)
+                    router.replace('/index')
+                }, 2000);
+            }else{
+                handleMessageM(`Error Occured - ${result.response}`)
+            }
+            setSubmitting(false)
+        })
+        .catch((error) => {
+            console.log(error)
+            handleMessageM("An error occured. Check your network and try again")
+        })
+    }
   return (
     <KeyboardAvoidingView>
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -106,10 +195,12 @@ const SameBank = ({account}) => {
                                 }}
                                 >
                                 <Picker.Item selectedValue enabled={false} label="--Select Account--" value={null} />
-                                { 
+                                { account !== null || account !== "" ?
                                     account.map((item) => (
                                         <Picker.Item key={item.acctnum} label={`${item.acctnum} (${item.accttype})`} value={item.acctnum} />
                                     ))
+                                    :
+                                    null
                                 }
                             </Picker>
                         </View>
@@ -144,20 +235,110 @@ const SameBank = ({account}) => {
               )}
                 </Formik>
                 </View>
+                <TouchableOpacity onPress={() => router.replace('./index')} style={{marginTop: 20}}>
+                    <Text style={{fontSize: 18, color: 'white'}}>Click me</Text>
+                </TouchableOpacity>
                 </ScrollView>
+                <View>
+            <Modal
+                animationType="slide"
+                animationInTiming={2000}
+                animationOutTiming={2000}
+                backdropTransitionInTiming={2000}
+                backdropTransitionOutTiming={2000}
+                animationIn={'zoomInDown'}
+                animationOut={'zoomOutUp'}
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                alert('Modal has been closed.');
+                setModalVisible(!modalVisible);
+                }}>
+                <View style={{justifyContent: 'center', flex: 1}}>
+                <View style={{borderRadius: 8, margin: 15, backgroundColor: '#424f76', height: 280, alignItems: 'center'}}>
+                <View style={{padding: 25, width: '100%', borderBottomColor: '#ffffff', borderBottomWidth: 2, marginBottom: 25}}>
+                    <Text style={{textAlign: 'center', color: 'white', textTransform: 'uppercase', fontSize: 18, fontWeight: 'bold'}}>Transaction Details</Text>
+                    <TouchableOpacity
+                    style={{position: 'absolute', right: 15, top: 10}}
+                    onPress={
+                        () => {setModalVisible(!modalVisible)
+                        handleCancel() }
+                        }>
+                    <FontAwesome5 name="times" size={20} color="white" />
+                    </TouchableOpacity>
+                </View>
+                    <Formik
+                        initialValues={pinValues}
+                        onSubmit={(values, {setSubmitting}) => {
+                            if(values.accountPin == ''){
+                                handleMessageM("Please fill all fields");
+                                setSubmitting(false)
+                            }else{
+                                handleConfirm(values, setSubmitting);
+                            }
+                        }}
+                    >{({handleChange, handleBlur, handleSubmit, values, isSubmitting}) => (
+                            <>
+                                <MyTextInput
+                                    icon="lock"
+                                    placeholder='Account Pin'
+                                    value={values.accountPin}
+                                    onChangeText={handleChange('accountPin')}
+                                    style={[styles.textInput, {width: 200}]}
+                                    handleBlur={handleBlur('accountPin')}
+                                    placeholderTextColor="#ffffff"
+                                    secureTextEntry={hidePassword}
+                                    isPassword={true}
+                                    hidePassword={hidePassword}
+                                    setHidePassword={setHidePassword}
+                                />
+                                <Text type={message} style={styles.msgBox}>{messageM}</Text>
+                                {!isSubmitting && <TouchableOpacity style={{
+                                    backgroundColor: "#fff",
+                                    borderWidth: 1,
+                                    width: 150,
+                                    padding: 12,
+                                    borderRadius: 5
+                                }} onPress={handleSubmit}>
+                                    <Text style={{
+                                        color: '#2f3855',
+                                        textAlign: 'center',
+                                        fontWeight: 'bold'
+                                    }}>Confirm</Text>
+                                </TouchableOpacity>}
+                                {isSubmitting && <TouchableOpacity style={{
+                                    backgroundColor: "#fff",
+                                    borderWidth: 1,
+                                    width: 150,
+                                    padding: 12,
+                                    borderRadius: 5
+                                }} disabled={true}>
+                                    <ActivityIndicator size="large" color='#2f3855' />
+                                </TouchableOpacity>}
+                            </>
+                    )}
+                    </Formik>
+                </View>
+                </View>
+            </Modal>
+            </View>
             </KeyboardAvoidingView>
   )
 }
 
-const MyTextInput = ({icon, ...props}) => {
+const MyTextInput = ({icon, isPassword, hidePassword, setHidePassword, ...props}) => {
     return (
         <View>
             <View style={styles.leftIcon}>
                 <FontAwesome5 name={icon} size={15} color='#ffffff' />
             </View>
             <TextInput {...props} />
+            {isPassword && (
+                <TouchableOpacity style={styles.rightIcon} onPress={() => setHidePassword(!hidePassword)}>
+                    <Ionicons name={hidePassword ? 'md-eye-off': 'md-eye'} size={18} color='#ffffff' />
+                </TouchableOpacity>
+            )}
         </View>
     )
 }
-
 export default SameBank

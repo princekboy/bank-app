@@ -19,15 +19,11 @@ const initialValues = {
     password: ''
 }
 
-
 const LoginScreen = () => {
+    const {storedCredentials, setStoredCredentials} = useContext(AuthContext);
     const [hidePassword, setHidePassword] = useState(true);
     const [message, setMessage] = useState('');
-    const [isLoading, setIsLoading] = useState(true);
-
     const router = useRouter();
-
-    const {storedCredentials, setStoredCredentials} = useContext(AuthContext);
 
     const handleLogin = (credentials, setSubmitting) => {
         handleMessage(null);
@@ -92,14 +88,18 @@ const LoginScreen = () => {
     const handleMessage = (message) => {
         setMessage(message)
     }
-  if(!storedCredentials){
-    return (
+return (
+    storedCredentials && storedCredentials != null || storedCredentials != "" ?
         <SafeAreaView style={styles.fullscreen}>
-            <ActivityIndicator size='large' color='white' />
+            <StatusBar
+                    animated={false}
+                    backgroundColor="#24293e"
+                    barStyle="light-content"
+                    hidden={false}
+                />
+                <ActivityIndicator size='large' color='white' />
         </SafeAreaView>
-    )
-  }else{
-    return (
+            :
         <SafeAreaView style={styles.fullscreen}>
                 <StatusBar
                     animated={false}
@@ -114,7 +114,7 @@ const LoginScreen = () => {
                         },
                         headerTitleAlign: "center",
                         headerShadowVisible: false,
-                        headerTitle: "Mobile Banking",
+                        headerTitle: "Oghene Bank",
                         headerShown: false,
                         headerTintColor: "#ffffff",
                         headerBackVisible: true
@@ -138,7 +138,7 @@ const LoginScreen = () => {
                             <MyTextInput
                                 icon="person"
                                 placeholder='Username'
-                                value={values.username}
+                                value={storedCredentials != null ? storedCredentials.username : values.username}
                                 onChangeText={handleChange('username')}
                                 style={styles.textInput}
                                 handleBlur={handleBlur('username')}
@@ -177,8 +177,7 @@ const LoginScreen = () => {
                     </ScrollView>
                 </KeyboardAvoidingView>
             </SafeAreaView>
-      )
-  }
+    )
 }
 
 const MyTextInput = ({icon, isPassword, hidePassword, setHidePassword, ...props}) => {

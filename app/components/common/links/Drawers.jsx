@@ -29,9 +29,9 @@ const Drawers = ({clearLogin}) => {
                 marginTop: 80
               }}
             >
-            <Image source={{
-              uri: photo == null ? require('../../../../assets/images/avatar.png') : `https://joenicehmp.com/l3git/images/users/${photo}`
-            }} resizeMode="contain" style={{width: 120, height: 120, borderRadius: 200 / 2, marginBottom: 20}} />
+            <Image source={
+              photo == null ? require('../../../../assets/images/avatar.png') : {uri: `https://joenicehmp.com/l3git/images/users/${photo}`}
+            } resizeMode="contain" style={{width: 120, height: 120, borderRadius: 200 / 2, marginBottom: 20}} />
             <Text style={{fontSize: 30, fontWeight: 'bold', marginBottom: 30}}>{fullname}</Text>
             </View>
             

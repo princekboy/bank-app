@@ -2,12 +2,14 @@ import React from 'react'
 import {View, Text, TouchableOpacity} from 'react-native';
 import styles from './buttonhome.style'
 import { MaterialCommunityIcons, Ionicons, FontAwesome, FontAwesome5 } from '@expo/vector-icons';
-const ButtonHomeTop = () => {
+import { useRouter } from 'expo-router';
+const ButtonHomeTop = ({userid}) => {
+  const router = useRouter();
   return (
     <View style={[styles.container, {marginTop: 30, marginBottom: 20}]}>
         <View style={styles.flex}>
           <View style={styles.item}>
-            <TouchableOpacity style={[styles.lightColor, {alignItems: "center", padding: 13, borderRadius: 5}]}>
+            <TouchableOpacity onPress={() => router.push({pathname: './transfer', params: {userid: userid}})} style={[styles.lightColor, {alignItems: "center", padding: 13, borderRadius: 5}]}>
               <FontAwesome name="exchange" size={28} color="white" />
             </TouchableOpacity>
             <Text style={[styles.whiteText, styles.p, {textAlign: "center"}]}>Send</Text>
