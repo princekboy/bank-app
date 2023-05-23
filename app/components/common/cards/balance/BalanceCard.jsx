@@ -5,9 +5,9 @@ import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 
 const BalanceCard = ({item, user}) => {
   return (
-    <View style={{justifyContent: 'center', alignItems: 'center', padding: 4}}>
+    <View style={{justifyContent: 'center', alignItems: 'center', padding: 4, width: 350}}>
       <View style={{
-      width: 340, 
+      width: '100%', 
       padding: 24,
       margin: 1,
       backgroundColor: "#8dbafe",

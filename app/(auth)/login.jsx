@@ -89,7 +89,7 @@ const LoginScreen = () => {
         setMessage(message)
     }
 return (
-    storedCredentials && storedCredentials != null || storedCredentials != "" ?
+    storedCredentials && storedCredentials != null ?
         <SafeAreaView style={styles.fullscreen}>
             <StatusBar
                     animated={false}

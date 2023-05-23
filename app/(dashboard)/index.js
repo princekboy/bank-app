@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react'
 import { AuthContext } from '../components/Credentials';
-import { SafeAreaView, ScrollView, ActivityIndicator, StatusBar, Image, TouchableOpacity, FlatList, Text, View, StyleSheet } from 'react-native';
+import { SafeAreaView, ScrollView, ActivityIndicator, RefreshControl, StatusBar, Image, TouchableOpacity, FlatList, Text, View, StyleSheet } from 'react-native';
 
 import { Link, Stack } from 'expo-router';
 
@@ -8,6 +8,7 @@ import axios from 'axios';
 import { BalanceCard, ButtonTop, Cards, Tabs } from '../components';
 
 const UserHome = () => {
+  const [refreshing, setRefreshing] = useState(false);
   const [result, setResult] = useState();
   const {storedCredentials, setStoredCredentials} = useContext(AuthContext);
   const config = {
@@ -61,7 +62,8 @@ const UserHome = () => {
                 headerTitleAlign: 'center',
               }}
             />
-            <ScrollView>
+            <ScrollView refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={fetchUserData} /> }>
             <View style={{margin: 10, marginTop: 17}}>
               <Text style={{color: '#fff', fontSize: 18, fontWeight: 800}}>Good morning, {fullname}</Text>
             </View>
