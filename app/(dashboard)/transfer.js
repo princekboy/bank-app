@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {View, Text, SafeAreaView, StatusBar, ScrollView, ActivityIndicator} from 'react-native'
+import {View, Text, SafeAreaView, RefreshControl, StatusBar, ScrollView, ActivityIndicator} from 'react-native'
 import {Stack, useLocalSearchParams} from 'expo-router'
 import { Local, Same, Tabs, Wire }  from '../components'
 import axios from 'axios'
@@ -7,6 +7,7 @@ import axios from 'axios'
 const tabs = ["Same", "Wire", "Local"];
 
 const Transfer = () => {
+  const [refreshing, setRefreshing] = useState(false);
   const params = useLocalSearchParams();
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [accounts, setAccounts] = useState();
@@ -91,7 +92,8 @@ const Transfer = () => {
                 headerTitleAlign: 'center',
               }}
             />
-            <ScrollView>
+            <ScrollView refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={fetchUserData} /> }>
               <View>
                 <View style={{borderBottomColor: '#fff', borderBottomWidth: 2, paddingBottom: 10, margin: 10}}>
                   <Text style={{fontSize: 20, color: '#fff', fontWeight: 'bold'}}>

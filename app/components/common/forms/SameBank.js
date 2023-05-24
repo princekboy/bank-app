@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {View, Text, Modal, StyleSheet, Alert, KeyboardAvoidingView, ScrollView, TouchableOpacity, TextInput, ActivityIndicator} from 'react-native'
 
 import { Formik } from 'formik';
@@ -15,9 +15,12 @@ const SameBank = ({account}) => {
     const router = useRouter();
     const [message, setMessage] = useState('');
     const [messageM, setMessageM] = useState('');
+    const [status, setStatus] = useState('');
     const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisibleTwo, setModalVisibleTwo] = useState(false);
     const [hidePassword, setHidePassword] = useState(true);
     const [res, setRes] = useState();
+    const [accounts, setAccounts] = useState();
 
     const handleMessage = (message) => {
         setMessage(message)
@@ -57,12 +60,12 @@ const SameBank = ({account}) => {
         .then(async (response) => {
             const result = response.data;
             if(result.status == 'success'){
-                handleMessage("Processing transactions ...")
+                handleMessage("Processing transaction ...")
                 setRes(result.response)
                 setTimeout(() => {
                     handleMessageM(null)
                     handleMessage(null)
-                    console.log(res)
+                    // console.log(res)
                     setModalVisible(true)
                 }, 1000);
             }else{
@@ -86,6 +89,7 @@ const SameBank = ({account}) => {
         let formData = new FormData();
         formData.append('transcid', transcid);
         formData.append('userid', user);
+        formData.append('table', 'transactions');
         formData.append('param', 'cancelTrans');
 
         const config = {
@@ -116,8 +120,9 @@ const SameBank = ({account}) => {
         })
     }
 
-    const handleMessageM = (messageM) => {
+    const handleMessageM = (messageM, status) => {
         setMessageM(messageM)
+        setStatus(status);
     }
 
     const handleConfirm = (values, setSubmitting) => {
@@ -147,27 +152,27 @@ const SameBank = ({account}) => {
         .then(async (response) => {
             const result = response.data;
             if(result.status == 'success'){
-                handleMessageM('Transaction Successful')
-                setTimeout(() => {
-                    setModalVisible(false)
-                    router.push('./')
-                }, 2000);
+                setModalVisibleTwo(true)
+                handleMessageM('Success', 'success')
+                setModalVisible(false)
             }else if(result.status == 'canceled'){
-               handleMessageM(`Error Occured - ${result.response}`)
+               setModalVisibleTwo(true)
+               setModalVisible(false)
+               handleMessageM(`Error Occured - ${result.response}`, 'cancelled')
                setTimeout(() => {
                 handleCancel()
                 handleMessage(null)
                }, 2000);
             }else{
-                handleMessageM(`Error Occured - ${result.response}`)
+                handleMessageM(`Error Occured - ${result.response}`, 'error')
             }
             setSubmitting(false)
         })
         .catch((error) => {
-            console.log(error)
-            handleMessageM("An error occured. Check your network and try again")
+            handleMessageM("An error occured. Check your network and try again", 'error')
         })
     }
+
   return (
     <KeyboardAvoidingView>
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -218,7 +223,7 @@ const SameBank = ({account}) => {
                                 }}
                                 >
                                 <Picker.Item selectedValue label="--Select Account--" value={null} />
-                                { account !== null || account !== "" ?
+                                { account != null || account != undefined ?
                                     account.map((item) => (
                                         <Picker.Item key={item.acctnum} label={`(${item.symbol}${item.balance}) ${item.acctnum} [${item.accttype}]`} value={item.acctnum} />
                                     ))
@@ -247,7 +252,6 @@ const SameBank = ({account}) => {
                             multiline={true}
                             numberOfLines={2}
                         />
-                        <Text type={message} style={styles.msgBox}>{message}</Text>
                         {!isSubmitting && <TouchableOpacity style={styles.buttonLight} onPress={handleSubmit}>
                             <Text style={styles.btnText}>Send</Text>
                         </TouchableOpacity>}
@@ -382,6 +386,43 @@ const SameBank = ({account}) => {
                         </View>
                     </Modal>
                 </View>
+                <Modal
+                    animationType="slide"
+                    animationInTiming={2000}
+                    animationOutTiming={2000}
+                    backdropTransitionInTiming={2000}
+                    backdropTransitionOutTiming={2000}
+                    animationIn={'zoomInDown'}
+                    animationOut={'zoomOutUp'}
+                    transparent={true}
+                    visible={modalVisibleTwo}
+                    onRequestClose={() => {
+                       alert('Modal has been closed.');
+                        setModalVisibleTwo(!modalVisibleTwo);
+                    }}>
+                    <View style={{justifyContent: 'center', flex: 1, height: '60%'}}>
+                        <View style={{borderRadius: 8, margin: 15, backgroundColor: '#424f76', alignItems: 'center', paddingBottom: 18}}>
+                            <View style={{padding: 25, width: '100%', borderBottomColor: '#ffffff', borderBottomWidth: 2, marginBottom: 10}}>
+                                <Text style={{textAlign: 'center', color: 'white', textTransform: 'uppercase', fontSize: 18, fontWeight: 'bold'}}><FontAwesome5 name="exclamation-circle" size={25} color="#fff" /> Info</Text>
+                                <TouchableOpacity
+                                    style={{position: 'absolute', right: 15, top: 20}}
+                                    onPress={
+                                        () => { setModalVisibleTwo(!modalVisibleTwo)
+                                            router.push('./')
+                                        }
+                                }>
+                                    <FontAwesome5 name="times" size={25} color="white" />
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{justifyContent: 'center', alignItems: 'center', padding: 10}}>
+                                <View style={{margin: 10}}>
+                                    <FontAwesome5 name={status == 'error' ? 'exclamation-circle' : status == 'success' ? 'check-circle' : 'times-circle'} size={25} color="#fff" />
+                                </View>
+                                <Text type={messageM} style={{color: '#fff', fontWeight: 'bold', fontSize: 20}}>{messageM}</Text>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
             </KeyboardAvoidingView>
   )
 }

@@ -47,7 +47,7 @@ const WireForm = ({account}) => {
     }
 
     const handleSend = (values, setSubmitting) => {
-        const {accountTo, accountFrom, amount, desc} = values;
+        const {accountTo, accountFrom, amount, desc, country, state, swift, fullname, currency, bank} = values;
         handleMessage(null);
 
         const url = 'https://joenicehmp.com/l3git/dbo/userop.php';
@@ -84,6 +84,7 @@ const WireForm = ({account}) => {
                     setModalVisible(true)
                 }, 1000);
             }else{
+                console.log(result.response)
                 handleMessage(`Error Occured - ${result.response}`)
             }
             setSubmitting(false)
@@ -105,6 +106,7 @@ const WireForm = ({account}) => {
         let formData = new FormData();
         formData.append('transcid', transcid);
         formData.append('userid', user);
+        formData.append('table', 'intltrans');
         formData.append('param', 'cancelTrans');
 
         const config = {
@@ -219,7 +221,7 @@ const WireForm = ({account}) => {
                         setSubmitting(false)
                     }else{
                         handleSend(values, setSubmitting);
-                        resetForm({values: ''})
+                        // resetForm({values: ''})
                     }
                 }}
               >{({handleChange, handleBlur, handleSubmit, values, isSubmitting}) => (
